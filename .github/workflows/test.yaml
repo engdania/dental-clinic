@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build and Push Frontend Docker Image
 
 on:
   push:
@@ -19,25 +19,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Login to Docker Hub
-      - name: Login to Docker Hub
+      - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build Backend Image
-      - name: Build Backend
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/dental-clinic:backend ./backend
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/dental-clinic:latest ./frontend
 
-      # Push Backend Image
-      - name: Push Backend
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/dental-clinic:backend
-
-      # Build Frontend Image
-      - name: Build Frontend
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/dental-clinic:frontend ./frontend
-
-      # Push Frontend Image
-      - name: Push Frontend
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/dental-clinic:frontend
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/dental-clinic:latest
